@@ -7,6 +7,7 @@ public class Main {
         System.out.println("=== DiabCare — Sprint 1 ===");
 
         System.out.println("--- Alertes & Notifications (Ines) ---");
+        System.out.println("----------------");
 
         Alerte a1 = new Alerte(1, 65, 101);
         a1.verifierSeuil();
