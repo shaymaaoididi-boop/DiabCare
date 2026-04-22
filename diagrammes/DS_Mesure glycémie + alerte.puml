@@ -1,0 +1,157 @@
+@startuml DS_DiabCare_v2
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+
+skinparam sequence {
+  ArrowColor #006B6B
+  ArrowThickness 1.5
+  ActorBorderColor #006B6B
+  ActorBackgroundColor #006B6B
+  ActorFontColor #FFFFFF
+  ActorFontSize 12
+  ParticipantBorderColor #006B6B
+  ParticipantBackgroundColor #E8F5F5
+  ParticipantFontColor #002222
+  ParticipantFontSize 11
+  LifeLineBorderColor #006B6B
+  LifeLineBackgroundColor #F5FFFE
+  BoxBackgroundColor #F9F9F9
+  BoxBorderColor #AAAAAA
+  NoteBackgroundColor #FFFDE7
+  NoteBorderColor #F9A825
+  NoteFontSize 10
+  GroupBackgroundColor #E8F5F5
+  GroupBorderColor #006B6B
+  GroupFontColor #004444
+  DividerBackgroundColor #006B6B
+  DividerFontColor #FFFFFF
+  DividerFontSize 12
+}
+
+title <b>Diagramme de Séquence — DiabCare</b>\nScénario : Enregistrement d'une mesure glycémique et déclenchement d'alerte
+
+' ── Participants ─────────────────────────────────────────────
+actor    "Patient"              as P
+participant "Patient.java"       as PAT   #FFF8E1
+participant "MesureGlycemique"   as MG    #E8F5E9
+participant "HistoriqueGlycemie" as HG    #E8F5E9
+participant "Alerte.java"        as AL    #FCE4EC
+participant "JournalAlertes"     as JA    #FCE4EC
+participant "DashboardMedecin"   as DB    #EDE7F6
+actor       "Médecin"            as M
+
+' ════════════════════════════════════════════════════════
+== Phase 1 : Authentification ==
+' ════════════════════════════════════════════════════════
+
+P -> PAT : seConnecter(email, motDePasse)
+activate PAT
+
+alt identifiants valides
+    PAT --> P : true
+    note right of PAT : Connexion réussie ✅
+else identifiants invalides
+    PAT --> P : false
+    note right of PAT : ❌ Echec de connexion
+end
+
+deactivate PAT
+
+' ════════════════════════════════════════════════════════
+== Phase 2 : Saisie et validation de la mesure ==
+' ════════════════════════════════════════════════════════
+
+P -> MG : new MesureGlycemique(valeur, unite, contexte, dateHeure, patientId)
+activate MG
+
+P -> MG : estValide()
+
+alt mesure dans la plage physiologique [1.0 ≤ valeur ≤ 35.0 mmol/L]
+
+    MG --> P : true
+
+    P -> HG : ajouterMesure(mesure)
+    activate HG
+    HG --> P : true — mesure enregistrée
+    deactivate HG
+
+    note right of MG : Mesure acceptée et\najoutée à l'historique
+
+else valeur hors plage physiologique
+
+    MG --> P : false
+    note right of MG : ❌ Mesure rejetée\nHors plage 1.0–35.0 mmol/L
+
+end
+
+deactivate MG
+
+' ════════════════════════════════════════════════════════
+== Phase 3 : Vérification des seuils et alertes ==
+' ════════════════════════════════════════════════════════
+
+P -> AL : verifierSeuil(valeur)
+activate AL
+
+note right of AL : Seuils :\n• Hypo < 3.9 mmol/L\n• Hyper légère > 10.0 mmol/L\n• Hyper sévère > 13.9 mmol/L
+
+opt alerte nécessaire [valeur critique détectée]
+
+    AL --> P : TypeAlerte (HYPOGLYCEMIE ou HYPERGLYCEMIE)
+
+    P -> AL : new Alerte(id, type, message, dateHeure, patientId)
+
+    AL -> AL : envoyerNotification()
+    note right of AL : Notification affichée\npour Patient et Médecin
+
+    AL --> M : ⚠️ Alerte glycémique critique !
+
+    P -> JA : ajouterAlerte(alerte)
+    activate JA
+    JA --> P : alerte enregistrée
+    deactivate JA
+
+end
+
+deactivate AL
+
+' ════════════════════════════════════════════════════════
+== Phase 4 : Mise à jour du tableau de bord ==
+' ════════════════════════════════════════════════════════
+
+P -> HG : calculerMoyenne()
+activate HG
+HG --> P : moyenne (mmol/L)
+deactivate HG
+
+M -> DB : afficherDashboard()
+activate DB
+
+loop pour chaque patient suivi [i = 1 à N]
+    DB -> DB : afficherLignePatient(patient[i])
+end
+
+DB --> M : tableau de bord affiché
+deactivate DB
+
+' ════════════════════════════════════════════════════════
+== Phase 5 : Consultation de l'historique filtré ==
+' ════════════════════════════════════════════════════════
+
+P -> HG : filtrerParContexte(APRES_REPAS)
+activate HG
+
+loop pour chaque mesure dans l'historique
+    HG -> HG : verifierContexte(mesure)
+end
+
+HG --> P : liste filtrée des mesures
+deactivate HG
+
+P -> HG : afficherHistorique()
+activate HG
+HG --> P : historique affiché avec moyenne
+deactivate HG
+
+@enduml
