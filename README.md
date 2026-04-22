@@ -60,6 +60,9 @@ L’objectif est d’améliorer le suivi médical entre les consultations et de 
 ### ✔ Alertes système
 - Détection hypo/hyperglycémie
 - Notification automatique
-
+  
+🎨 Design & Prototype
+Les maquettes de l'application sont disponibles sur Figma :
+🔗 Voir le design DiabCare sur Figma
 ---
 
