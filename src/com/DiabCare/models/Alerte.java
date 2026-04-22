@@ -8,14 +8,14 @@ public class Alerte {
     private String message;
     private int patientId;
 
-    // constructeur
+    
     public Alerte(int id, double valeur, int patientId) {
         this.id = id;
         this.valeur = valeur;
         this.patientId = patientId;
     }
 
-    // logique simple (Sprint 1)
+    
     public void verifierSeuil() {
 
         if (valeur < 70) {
