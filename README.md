@@ -63,4 +63,3 @@ L’objectif est d’améliorer le suivi médical entre les consultations et de 
 
 ---
 
-## 🧱 Architecture du projet
