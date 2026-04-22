@@ -2,14 +2,20 @@ package com.diabcare.models;
 
 public class RendezVous {
 
+    private int id;
     private String date;
 
     // constructeur
-    public RendezVous(String date) {
+    public RendezVous(int id, String date) {
+        this.id = id;
         this.date = date;
     }
 
-    // getter
+    // getters
+    public int getId() {
+        return id;
+    }
+
     public String getDate() {
         return date;
     }

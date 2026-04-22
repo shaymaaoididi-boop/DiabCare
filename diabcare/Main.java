@@ -5,8 +5,14 @@ public class Main {
 
         System.out.println("=== DiabCare ===");
 
-        RendezVous rdv = new RendezVous("20/04/2026");
         RendezVousService service = new RendezVousService();
 
-        service.demanderRDV(rdv);
+        RendezVous rdv1 = new RendezVous(1, "20/04/2026");
+        RendezVous rdv2 = new RendezVous(2, "21/04/2026");
+
+        service.demanderRDV(rdv1);
+        service.demanderRDV(rdv2);
+
+        service.consulterRDV();
     }
+}
