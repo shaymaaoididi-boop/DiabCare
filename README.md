@@ -61,7 +61,7 @@ L’objectif est d’améliorer le suivi médical entre les consultations et de 
 - Détection hypo/hyperglycémie
 - Notification automatique
   
-## ⚙️Desgin DiabCare
+## 🎨Desgin DiabCare
 - les maquettes de l'application sont disponibles sur FIGMA
 https://www.figma.com/make/xVhcJ9FvDguIBkudt0AtXy/DiabCare-app-screens-design?t=kBvibGkLmZoJd9tR-20&fullscreen=1&preview-route=%2Fadmin
 ---
