@@ -59,7 +59,7 @@ public class Main {
         System.out.println("\n===== TESTS =====");
 
         System.out.println("Dernières 3 mesures :");
-        for (MesureGlycemique m : historique.getDernieresMesures(3)) {
+        for (MesureGlycemique m : historique.getMesures()) {
             m.afficherDetails();
         }
 
