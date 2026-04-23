@@ -74,7 +74,7 @@ public class HistoriqueGlycemie {
         return Math.round((somme / mesures.size()) * 10.0) / 10.0;
     }
      // ──  Moyenne par contexte ─────────────────────────────────
-    public double calculerMoyenneParContexte(ContexteMesure contexte) {
+    public double calculerMoyenneParContexte(string contexte) {
         ArrayList<MesureGlycemique> filtrees = filtrerParContexte(contexte);
         if (filtrees.isEmpty()) return 0.0;
         double somme = 0.0;
@@ -114,10 +114,10 @@ public class HistoriqueGlycemie {
         return "➡️  Stable";
     }
     // ── Filtre par contexte ───────────────────────────────────
-    public ArrayList<MesureGlycemique> filtrerParContexte(ContexteMesure contexte) {
+    public ArrayList<MesureGlycemique> filtrerParContexte(String contexte) {
         ArrayList<MesureGlycemique> res = new ArrayList<>();
         for (MesureGlycemique m : mesures)
-            if (m.getContexte() == contexte) res.add(m);
+            if (m.getContexte().equalsIgnoreCase(contexte)) res.add(m);
         return res;
     }
     // ── Bilan complet ──────────────────────────────────────────
