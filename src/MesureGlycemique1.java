@@ -8,6 +8,12 @@ import com.diabcare.enums.ContexteMesure;
  *
  * Fonctionnalité : Enregistrement & Historique des mesures glycémiques
  *
+ *  * Sprint 2 — Logique complète :
+ *   - convertirUnite() : conversion bidirectionnelle réelle
+ *   - evaluerGlycemie() : évaluation qualitative selon contexte
+ *   - estCritique() : détection rapide d'une valeur critique
+ *   - getStatutCouleur() : indicateur visuel pour le dashboard
+ *
  * Seuils physiologiques (mmol/L) :
  *   - Plage valide     :  1.0 – 35.0
  *   - Normale à jeun   :  4.0 –  5.9
@@ -20,6 +26,7 @@ public class MesureGlycemique {
     public static final double SEUIL_MIN_PHYSIOLOGIQUE  = 1.0;
     public static final double SEUIL_MAX_PHYSIOLOGIQUE  = 35.0;
     public static final double SEUIL_HYPO               = 3.9;
+    public static final double SEUIL_NORMAL_HAUT        = 7.8;  // à jeun
     public static final double SEUIL_HYPER_LEGERE       = 10.0;
     public static final double SEUIL_HYPER_SEVERE       = 13.9;
 
@@ -30,6 +37,7 @@ public class MesureGlycemique {
     private ContexteMesure contexte;
     private String         dateHeure;     // format "AAAA-MM-JJ HH:MM"
     private int            patientId;
+    private String         notePatient; 
 
     // ── Constructeur vide ────────────────────────────────────────────────────
     public MesureGlycemique() {
@@ -39,6 +47,7 @@ public class MesureGlycemique {
         this.contexte  = ContexteMesure.A_JEUN;
         this.dateHeure = "";
         this.patientId = 0;
+        this.notePatient = "";
     }
 
     // ── Constructeur complet ─────────────────────────────────────────────────
@@ -51,6 +60,7 @@ public class MesureGlycemique {
         this.contexte  = contexte;
         this.dateHeure = dateHeure;
         this.patientId = patientId;
+        this.notePatient = "";
     }
 
     // ── Méthodes métier ──────────────────────────────────────────────────────
@@ -74,16 +84,53 @@ public class MesureGlycemique {
         }
         return Math.round(valeur * 10.0) / 10.0;
     }
+     /**
+
+  * Évalue la glycémie et retourne un diagnostic.
+  * @return texte décrivant l’état glycémique
+    */
+    public String evaluerGlycemie() {
+    if (valeur < SEUIL_HYPO)
+    return "🔵 HYPOGLYCÉMIE";
+    if (valeur > SEUIL_HYPER_SEVERE)
+    return "🔴 HYPERGLYCÉMIE SÉVÈRE";
+    if (valeur > SEUIL_HYPER_LEGERE)
+    return "🟠 HYPERGLYCÉMIE LÉGÈRE";
+    if (contexte == ContexteMesure.A_JEUN && valeur <= 5.9)
+    return "🟢 NORMAL À JEUN";
+    if (contexte == ContexteMesure.APRES_REPAS && valeur <= SEUIL_NORMAL_HAUT)
+    return "🟢 NORMAL POST-PRANDIAL";
+    return "🟡 LÉGÈREMENT ÉLEVÉ";
+    }
+     /**
+
+  * Vérifie si la mesure est critique.
+  * @return true si hypo ou hyper sévère
+    */
+    public boolean estCritique() {
+    return valeur < SEUIL_HYPO || valeur > SEUIL_HYPER_SEVERE;
+    }
+ /**
+
+  * Retourne une couleur pour le dashboard.
+  * @return VERT, JAUNE, ORANGE ou ROUGE
+    */
+    public String getStatutCouleur() {
+    if (valeur < SEUIL_HYPO || valeur > SEUIL_HYPER_SEVERE) return "ROUGE";
+    if (valeur > SEUIL_HYPER_LEGERE) return "ORANGE";
+    if (valeur > SEUIL_NORMAL_HAUT)  return "JAUNE";
+    return "VERT";
+    }
 
     /**
      * Affiche les détails de la mesure dans la console.
      */
-    public void afficherDetails() {
-        System.out.println("  Mesure #" + id
-                + " | " + String.format("%.1f", valeur) + " mmol/L"
-                + " (" + String.format("%.0f", convertirUnite("mg/dL")) + " mg/dL)"
-                + " | " + contexte
-                + " | " + dateHeure);
+     public void afficherDetails() {
+        System.out.printf("      #%-3d | %5.1f mmol/L (%5.0f mg/dL) | %-14s | %s | %s%n",
+                id, valeur, convertirUnite("mg/dL"),
+                contexte.toString(), dateHeure, evaluerGlycemie());
+        if (!notePatient.isEmpty())
+            System.out.println("           Note : " + notePatient);
     }
 
     // ── Getters ──────────────────────────────────────────────────────────────
@@ -93,6 +140,7 @@ public class MesureGlycemique {
     public ContexteMesure getContexte()  { return contexte; }
     public String         getDateHeure() { return dateHeure; }
     public int            getPatientId() { return patientId; }
+    public String getNotePatient() { return notePatient; }
 
     // ── Setters ──────────────────────────────────────────────────────────────
     public void setId(int id)                      { this.id = id; }
@@ -101,11 +149,12 @@ public class MesureGlycemique {
     public void setContexte(ContexteMesure c)      { this.contexte = c; }
     public void setDateHeure(String dateHeure)     { this.dateHeure = dateHeure; }
     public void setPatientId(int patientId)        { this.patientId = patientId; }
+    public void setNotePatient(String notePatient) { this.notePatient = notePatient; }
 
-    @Override
+
+   @Override
     public String toString() {
-        return "Mesure{id=" + id
-                + ", " + String.format("%.1f", valeur) + " mmol/L"
-                + ", " + contexte + ", " + dateHeure + "}";
+        return String.format("Mesure{#%d, %.1f mmol/L, %s, %s, %s}",
+                id, valeur, contexte, evaluerGlycemie(), dateHeure);
     }
 }
