@@ -17,11 +17,11 @@ public class RendezVous {
     }
 
     public void confirmer() {
-        statut = "Confirmé";
+        this.statut = "Confirmé";
     }
 
     public void annuler() {
-        statut = "Annulé";
+        this.statut = "Annulé";
     }
 
     public String getStatut() {
@@ -35,14 +35,5 @@ public class RendezVous {
                 "\nDate: " + date +
                 "\nHeure: " + heure +
                 "\nStatut: " + statut;
-    }
-}
-
-    public String getRecapitulatif() {
-        return "Médecin: " + medecin.getNom() +
-               "\nSpécialité: " + medecin.getSpecialite() +
-               "\nDate: " + date +
-               "\nHeure: " + heure +
-               "\nStatut: " + statut;
     }
 }
