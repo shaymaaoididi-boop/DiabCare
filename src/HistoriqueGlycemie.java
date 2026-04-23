@@ -1,6 +1,6 @@
 package com.diabcare.models;
 
-import com.diabcare.enums.ContexteMesure;
+
 import java.util.ArrayList;
 
 /**
