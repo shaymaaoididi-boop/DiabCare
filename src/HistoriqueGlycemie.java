@@ -133,9 +133,9 @@ public class HistoriqueGlycemie {
 
     System.out.println("\n--- Détails ---");
     System.out.println("Moyenne à jeun : "
-            + calculerMoyenneParContexte(ContexteMesure.A_JEUN));
+            + calculerMoyenneParContexte("A_JEUN") );
     System.out.println("Moyenne après repas : "
-            + calculerMoyenneParContexte(ContexteMesure.APRES_REPAS));
+            + calculerMoyenneParContexte("APRES_REPAS"));
 }
   // ── Affichage ──────────────────────────────────────────────
  public void afficherHistorique() {
