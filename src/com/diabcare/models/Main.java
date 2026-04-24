@@ -1,18 +1,21 @@
-System.out.println("--- Dashboard Médecin (Yassmine) ---");
+package com.DiabCare.models;
 
-Patient p1 = new Patient("Khalil", "k@mail.com", "123");
-p1.setDerniereMesure(18.5);
+public class Main {
 
-Patient p2 = new Patient("Amira", "a@mail.com", "123");
-p2.setDerniereMesure(7.2);
+    public static void main(String[] args) {
 
-Patient p3 = new Patient("Leila", "l@mail.com", "123");
-p3.setDerniereMesure(14.0);
+        System.out.println("=== DiabCare — SPRINT 2 ===");
 
-Medecin med = new Medecin("Dr. Yassmine");
+        Alerte a1 = new Alerte(1, 65, 101);
+        a1.traiter();
 
-med.ajouterPatient(p1);
-med.ajouterPatient(p2);
-med.ajouterPatient(p3);
+        Alerte a2 = new Alerte(2, 150, 102);
+        a2.traiter();
 
-med.afficherDashboard();
+        Alerte a3 = new Alerte(3, 300, 103);
+        a3.traiter();
+
+        System.out.println("\n📊 AFFICHAGE HISTORIQUE:");
+        Alerte.afficherHistorique();
+    }
+}
