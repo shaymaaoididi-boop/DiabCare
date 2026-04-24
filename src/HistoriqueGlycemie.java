@@ -1,6 +1,6 @@
 package com.diabcare.models;
 
-import com.diabcare.enums.ContexteMesure;
+
 import java.util.ArrayList;
 
 /**
@@ -74,7 +74,7 @@ public class HistoriqueGlycemie {
         return Math.round((somme / mesures.size()) * 10.0) / 10.0;
     }
      // ──  Moyenne par contexte ─────────────────────────────────
-    public double calculerMoyenneParContexte(ContexteMesure contexte) {
+    public double calculerMoyenneParContexte(string contexte) {
         ArrayList<MesureGlycemique> filtrees = filtrerParContexte(contexte);
         if (filtrees.isEmpty()) return 0.0;
         double somme = 0.0;
@@ -114,10 +114,10 @@ public class HistoriqueGlycemie {
         return "➡️  Stable";
     }
     // ── Filtre par contexte ───────────────────────────────────
-    public ArrayList<MesureGlycemique> filtrerParContexte(ContexteMesure contexte) {
+    public ArrayList<MesureGlycemique> filtrerParContexte(String contexte) {
         ArrayList<MesureGlycemique> res = new ArrayList<>();
         for (MesureGlycemique m : mesures)
-            if (m.getContexte() == contexte) res.add(m);
+            if (m.getContexte().equalsIgnoreCase(contexte)) res.add(m);
         return res;
     }
     // ── Bilan complet ──────────────────────────────────────────
@@ -133,9 +133,9 @@ public class HistoriqueGlycemie {
 
     System.out.println("\n--- Détails ---");
     System.out.println("Moyenne à jeun : "
-            + calculerMoyenneParContexte(ContexteMesure.A_JEUN));
+            + calculerMoyenneParContexte("A_JEUN") );
     System.out.println("Moyenne après repas : "
-            + calculerMoyenneParContexte(ContexteMesure.APRES_REPAS));
+            + calculerMoyenneParContexte("APRES_REPAS"));
 }
   // ── Affichage ──────────────────────────────────────────────
  public void afficherHistorique() {

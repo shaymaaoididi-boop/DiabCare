@@ -1,7 +1,5 @@
 package com.diabcare.models;
 
-import com.diabcare.enums.ContexteMesure;
-
 /**
  * Encapsule une mesure glycémique saisie par un patient.
  * Responsable : kenza (Scrum Master)
@@ -30,11 +28,16 @@ public class MesureGlycemique {
     public static final double SEUIL_HYPER_LEGERE       = 10.0;
     public static final double SEUIL_HYPER_SEVERE       = 13.9;
 
+    public static final String A_JEUN = "A_JEUN";
+    public static final String AVANT_REPAS = "AVANT_REPAS";
+    public static final String APRES_REPAS = "APRES_REPAS";
+    public static final String AU_COUCHER = "AU_COUCHER";
+
     // ── Champs privés ────────────────────────────────────────────────────────
     private int            id;
     private double         valeur;        // valeur en mmol/L (stockage interne)
     private String         unite;         // "mmol/L" ou "mg/dL"
-    private ContexteMesure contexte;
+    private String         contexte;
     private String         dateHeure;     // format "AAAA-MM-JJ HH:MM"
     private int            patientId;
     private String         notePatient; 
@@ -44,24 +47,23 @@ public class MesureGlycemique {
         this.id        = 0;
         this.valeur    = 0.0;
         this.unite     = "mmol/L";
-        this.contexte  = ContexteMesure.A_JEUN;
+        this.contexte  = A_JEUN;
         this.dateHeure = "";
         this.patientId = 0;
         this.notePatient = "";
     }
 
     // ── Constructeur complet ─────────────────────────────────────────────────
-    public MesureGlycemique(int id, double valeur, String unite,
-                            ContexteMesure contexte, String dateHeure, int patientId) {
-        this.id        = id;
-        this.unite     = unite;
-        // Normalisation : on stocke toujours en mmol/L
-        this.valeur    = unite.equalsIgnoreCase("mg/dL") ? valeur / 18.0 : valeur;
-        this.contexte  = contexte;
-        this.dateHeure = dateHeure;
-        this.patientId = patientId;
-        this.notePatient = "";
-    }
+   public MesureGlycemique(int id, double valeur, String unite,
+                        String contexte, String dateHeure, int patientId) {
+    this.id        = id;
+    this.unite     = unite;
+    this.valeur    = unite.equalsIgnoreCase("mg/dL") ? valeur / 18.0 : valeur;
+    this.contexte  = contexte;
+    this.dateHeure = dateHeure;
+    this.patientId = patientId;
+    this.notePatient = "";
+}
 
     // ── Méthodes métier ──────────────────────────────────────────────────────
 
@@ -96,9 +98,9 @@ public class MesureGlycemique {
     return "🔴 HYPERGLYCÉMIE SÉVÈRE";
     if (valeur > SEUIL_HYPER_LEGERE)
     return "🟠 HYPERGLYCÉMIE LÉGÈRE";
-    if (contexte == ContexteMesure.A_JEUN && valeur <= 5.9)
+    if (contexte.equalsIgnoreCase(A_JEUN) && valeur <= 5.9)
     return "🟢 NORMAL À JEUN";
-    if (contexte == ContexteMesure.APRES_REPAS && valeur <= SEUIL_NORMAL_HAUT)
+    if (contexte.equalsIgnoreCase(APRES_REPAS) && valeur <= SEUIL_NORMAL_HAUT)
     return "🟢 NORMAL POST-PRANDIAL";
     return "🟡 LÉGÈREMENT ÉLEVÉ";
     }
@@ -128,7 +130,7 @@ public class MesureGlycemique {
      public void afficherDetails() {
         System.out.printf("      #%-3d | %5.1f mmol/L (%5.0f mg/dL) | %-14s | %s | %s%n",
                 id, valeur, convertirUnite("mg/dL"),
-                contexte.toString(), dateHeure, evaluerGlycemie());
+                contexte, dateHeure, evaluerGlycemie());
         if (!notePatient.isEmpty())
             System.out.println("           Note : " + notePatient);
     }
@@ -137,16 +139,16 @@ public class MesureGlycemique {
     public int            getId()        { return id; }
     public double         getValeur()    { return valeur; }
     public String         getUnite()     { return unite; }
-    public ContexteMesure getContexte()  { return contexte; }
+    public String         getContexte()  { return contexte; }
     public String         getDateHeure() { return dateHeure; }
     public int            getPatientId() { return patientId; }
-    public String getNotePatient() { return notePatient; }
+    public String         getNotePatient() { return notePatient; }
 
     // ── Setters ──────────────────────────────────────────────────────────────
     public void setId(int id)                      { this.id = id; }
     public void setValeur(double valeur)           { this.valeur = valeur; }
     public void setUnite(String unite)             { this.unite = unite; }
-    public void setContexte(ContexteMesure c)      { this.contexte = c; }
+    public void setContexte(String contexte)       { this.contexte = contexte; }
     public void setDateHeure(String dateHeure)     { this.dateHeure = dateHeure; }
     public void setPatientId(int patientId)        { this.patientId = patientId; }
     public void setNotePatient(String notePatient) { this.notePatient = notePatient; }
