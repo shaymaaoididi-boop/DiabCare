@@ -1,0 +1,167 @@
+@startuml DC
+skinparam backgroundColor #FFFFFF
+skinparam class {
+  BackgroundColor #E0F4F4
+  BorderColor #006B6B
+  FontColor #003333
+  FontSize 10
+  HeaderBackgroundColor #006B6B
+  HeaderFontColor #FFFFFF
+  HeaderFontStyle bold
+}
+skinparam ArrowColor #006B6B
+skinparam ArrowThickness 1.2
+skinparam stereotypeCBackgroundColor #AADDDD
+skinparam title {
+  FontSize 12
+  FontColor #006B6B
+  FontStyle bold
+}
+skinparam note {
+  BackgroundColor #FFFDE7
+  BorderColor #F9A825
+  FontSize 9
+}
+skinparam nodesep 18
+skinparam ranksep 35
+
+title Diagramme de Classes — DiabCare\nProjet AGL 2025/2026 — FSEGT
+
+' ═══ COL GAUCHE : Abstraite + héritage ═══
+together {
+  abstract class Utilisateur <<Chaima>> {
+    - id : int
+    - nom : String
+    - prenom : String
+    - email : String
+    - motDePasse : String
+    --
+    + seConnecter(email, mdp) : boolean
+    + seDeconnecter() : void
+    + {abstract} getRole() : String
+  }
+
+  class Patient <<Chaima>> {
+    - typeDiabete : TypeDiabete
+    - poids : double
+    - medicaments : String
+    - medecinReferentId : int
+    --
+    + sInscrire() : boolean
+    + modifierProfil(poids, meds) : void
+    + getRole() : String
+  }
+
+  class Medecin <<Yassmine>> {
+    - specialite : String
+    - numeroOrdre : String
+    --
+    + getRole() : String
+    + ajouterCommentaire(mesure, texte) : void
+    + validerRendezVous(rdv) : void
+    + refuserRendezVous(rdv, motif) : void
+  }
+
+  class Administrateur <<Ines>> {
+    - niveauAcces : int
+    --
+    + getRole() : String
+    + gererCompte(utilisateur) : void
+    + consulterStatistiques() : void
+  }
+}
+
+' ═══ COL DROITE : Fonctionnalités ═══
+together {
+  class MesureGlycemique <<Kenza>> {
+    - id : int
+    - valeur : double
+    - unite : String
+    - contexte : ContexteMesure
+    - dateHeure : String
+    --
+    + estValide() : boolean
+    + convertirUnite() : double
+    + afficherDetails() : void
+  }
+
+  class HistoriqueGlycemie <<Kenza>> {
+    - mesures : ArrayList<MesureGlycemique>
+    - patientId : int
+    --
+    + ajouterMesure(mesure) : void
+    + calculerMoyenne() : double
+    + filtrerParContexte(c) : ArrayList
+    + afficherHistorique() : void
+  }
+
+  class RendezVous <<Folla>> {
+    - id : int
+    - date : String
+    - heure : String
+    - statut : StatutRDV
+    - patientId : int
+    - medecinId : int
+    --
+    + demanderRendezVous() : boolean
+    + valider() : void
+    + annuler(motif) : void
+  }
+
+  class DashboardMedecin <<Yassmine>> {
+    - medecinId : int
+    - patients : ArrayList<Patient>
+    --
+    + ajouterPatient(patient) : void
+    + afficherDashboard() : void
+  }
+
+  class CommentaireClinique <<Yassmine>> {
+    - id : int
+    - texte : String
+    - medecinId : int
+    - mesureId : int
+    --
+    + afficherDetails() : void
+  }
+
+  class Alerte <<Ines>> {
+    - id : int
+    - type : TypeAlerte
+    - patientId : int
+    - traitee : boolean
+    --
+    + verifierSeuil(valeur) : TypeAlerte
+    + envoyerNotification() : void
+    + marquerTraitee() : void
+  }
+
+  class JournalAlertes <<Ines>> {
+    - alertes : ArrayList<Alerte>
+    --
+    + ajouterAlerte(alerte) : void
+    + getAlertesNonTraitees() : ArrayList
+    + afficherJournal() : void
+  }
+}
+
+' ═══ RELATIONS ═══
+Utilisateur <|-- Patient        : herite
+Utilisateur <|-- Medecin        : herite
+Utilisateur <|-- Administrateur : herite
+
+Patient          "1" *--> "1"    HistoriqueGlycemie  : possede >
+HistoriqueGlycemie "1" *--> "0..*" MesureGlycemique  : contient >
+DashboardMedecin "1" *--> "0..*" Patient             : gere >
+Medecin          "1" o--> "1"   DashboardMedecin     : consulte >
+Patient          "1" o--> "0..*" RendezVous          : demande >
+Medecin          "1" o--> "0..*" RendezVous          : valide >
+MesureGlycemique "1" ..>  "0..1" Alerte              : declenche >
+JournalAlertes   "1" *--> "0..*" Alerte              : enregistre >
+CommentaireClinique "0..*" o--> "1" MesureGlycemique : commente >
+Medecin          "1" o--> "0..*" CommentaireClinique : redige >
+
+note right of Utilisateur : Classe abstraite\ncommune a tous les acteurs
+note right of JournalAlertes : Seuils :\nhypo < 3.9 mmol/L\nhyper > 13.9 mmol/L
+
+@enduml
