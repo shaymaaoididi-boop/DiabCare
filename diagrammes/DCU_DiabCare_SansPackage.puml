@@ -1,0 +1,107 @@
+@startuml DCU_SansPackage
+skinparam backgroundColor #FFFFFF
+
+skinparam usecase {
+  BackgroundColor #E0F4F4
+  BorderColor #006B6B
+  FontColor #003333
+  FontSize 11
+}
+
+skinparam ArrowColor #006B6B
+skinparam ArrowThickness 1
+skinparam title {
+  FontSize 13
+  FontColor #006B6B
+  FontStyle bold
+}
+skinparam nodesep 18
+skinparam ranksep 22
+
+left to right direction
+
+title DiabCare — Diagramme de Cas d'Utilisation\nProjet AGL 2025/2026 — FSEGT
+
+' ── Acteurs ──────────────────────────────────
+actor "Visiteur"       as V
+actor "Patient"        as P
+actor "Medecin"        as M
+actor "Administrateur" as A
+
+V <|-- P
+V <|-- M
+
+' ── Cas d'utilisation ────────────────────────
+rectangle "Systeme DiabCare" {
+
+  ' Acces public
+  usecase "Consulter page accueil"      as UC01
+  usecase "S'inscrire"                  as UC02
+  usecase "Se connecter"                as UC03
+  usecase "Consulter aide"              as UC04
+
+  ' F1 Chaima
+  usecase "Gerer profil medical\n[Chaima — F1]"        as UC05
+  usecase "Modifier infos\n(poids, medicaments)"       as UC06
+  usecase "Se deconnecter"                             as UC07
+
+  ' F2 Kenza
+  usecase "Enregistrer mesure\nglycemique [Kenza — F2]" as UC08
+  usecase "Valider plage\nphysiologique"                as UC09
+  usecase "Consulter historique\nmesures"               as UC10
+  usecase "Filtrer historique\npar contexte"            as UC11
+  usecase "Calculer moyenne\nglycemique"                as UC12
+
+  ' F3 Folla
+  usecase "Demander un\nrendez-vous [Folla — F3]"      as UC13
+  usecase "Consulter ses\nrendez-vous"                 as UC14
+  usecase "Valider / Refuser\nun RDV"                  as UC19
+
+  ' F4 Yassmine
+  usecase "Consulter tableau\nde bord [Yassmine — F4]" as UC16
+  usecase "Voir detail\nd'un patient"                  as UC17
+  usecase "Ajouter commentaire\nclinique"              as UC18
+
+  ' F5 Ines
+  usecase "Verifier seuil\ncritique [Ines — F5]"       as UC21
+  usecase "Recevoir alerte\nglycemique"                as UC20
+  usecase "Consulter journal\ndes alertes"             as UC22
+  usecase "Gerer comptes\nutilisateurs"                as UC23
+  usecase "Consulter\nstatistiques"                    as UC24
+
+}
+
+' ── Associations acteurs ─────────────────────
+V --> UC01
+V --> UC02
+V --> UC03
+V --> UC04
+
+P --> UC05
+P --> UC07
+P --> UC08
+P --> UC10
+P --> UC13
+P --> UC14
+P --> UC20
+
+M --> UC16
+M --> UC17
+M --> UC18
+M --> UC19
+M --> UC22
+
+A --> UC23
+A --> UC24
+
+' ── include / extend ─────────────────────────
+UC02 ..> UC03 : <<include>>
+UC08 ..> UC09 : <<include>>
+UC08 ..> UC21 : <<include>>
+UC10 ..> UC12 : <<include>>
+UC10 ..> UC11 : <<extend>>
+UC05 ..> UC06 : <<extend>>
+UC21 ..> UC20 : <<include>>
+UC16 ..> UC17 : <<extend>>
+
+@enduml

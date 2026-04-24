@@ -1,0 +1,65 @@
+@startuml DS_Court
+skinparam backgroundColor #FFFFFF
+skinparam sequence {
+  ArrowColor #006B6B
+  ActorBorderColor #006B6B
+  ActorBackgroundColor #E0F4F4
+  ParticipantBorderColor #006B6B
+  ParticipantBackgroundColor #E0F4F4
+  ParticipantFontColor #003333
+  ParticipantFontSize 11
+  LifeLineBorderColor #AAAAAA
+  LifeLineBackgroundColor #F5FFFE
+  NoteBackgroundColor #FFFDE7
+  NoteBorderColor #F9A825
+  GroupBackgroundColor #F0FAF9
+  GroupBorderColor #006B6B
+}
+skinparam title {
+  FontSize 13
+  FontColor #006B6B
+  FontStyle bold
+}
+
+title DiabCare — Diagramme de Sequence sprint1\nScenario : Patient demande un RDV et Medecin valide
+
+actor "Patient Fatma" as P
+participant "RendezVous\nFolla F3" as RDV
+participant "DashboardMedecin\nYassmine F4" as DB
+actor "Dr. Ben Tahar" as M
+
+== 1. Demande de rendez-vous ==
+
+P -> RDV : demanderRendezVous("2025-04-25", "09:00", "Controle glycemique")
+activate RDV
+note right of RDV
+  Validation date OK
+  Duree estimee : 20 min
+  Statut : EN_ATTENTE
+end note
+RDV --> P : "RDV #301 demande avec succes"
+deactivate RDV
+
+== 2. Medecin consulte son tableau de bord ==
+
+M -> DB : afficherDashboard()
+activate DB
+DB --> M : "Fatma — RDV en attente\n25/04 a 09h00"
+deactivate DB
+
+== 3. Validation du RDV ==
+
+alt RDV accepte
+  M -> RDV : valider()
+  activate RDV
+  RDV --> M : statut = VALIDE
+  RDV --> P : "Notification : RDV confirme le 25/04 a 09:00"
+  deactivate RDV
+else Agenda complet
+  M -> RDV : annuler("Agenda complet")
+  activate RDV
+  RDV --> P : "Notification : RDV refuse"
+  deactivate RDV
+end
+
+@enduml
