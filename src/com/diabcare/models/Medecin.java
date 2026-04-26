@@ -18,17 +18,17 @@ public class Medecin {
 
     public void ajouterPatient(Patient p) {
         patients.add(p);
-        System.out.println("✅ Patient ajouté : " + p.getNom());
+        System.out.println(" Patient ajouté : " + p.getNom());
     }
 
     public void analyserPatients() {
-        System.out.println("\n🧠 Analyse médicale du Dr " + nom);
+        System.out.println("\n Analyse médicale du Dr " + nom);
 
         for (Patient p : patients) {
             if (p.estAlerte()) {
-                System.out.println("⚠ " + p.getNom() + " - RISQUE ÉLEVÉ");
+                System.out.println(" " + p.getNom() + " - RISQUE ÉLEVÉ");
             } else {
-                System.out.println("✅ " + p.getNom() + " - Stable");
+                System.out.println(" " + p.getNom() + " - Stable");
             }
         }
     }

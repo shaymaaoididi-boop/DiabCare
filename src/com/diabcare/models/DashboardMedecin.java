@@ -12,7 +12,7 @@ public class DashboardMedecin {
         System.out.println("\n=== DASHBOARD MÉDECIN ===");
         medecin.afficherDetails();
 
-        System.out.println("\n📊 Statistiques globales :");
+        System.out.println("\n Statistiques globales :");
         System.out.println("Nombre de patients : " +
                 medecin.getPatients().size());
 

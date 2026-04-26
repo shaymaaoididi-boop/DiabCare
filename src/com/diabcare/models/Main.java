@@ -24,10 +24,10 @@ public class Main {
         dashboard.afficherDashboard();
 
         // Simulation évolution
-        System.out.println("\n🔄 Mise à jour glycémie...");
+        System.out.println("\n Mise à jour glycémie...");
         p1.mettreAJourGlycemie(2.1);
 
-        System.out.println("\n📌 Nouvelle analyse :");
+        System.out.println("\n Nouvelle analyse :");
         medecin.analyserPatients();
 
         System.out.println("\n=== FIN DÉMONSTRATION ===");
