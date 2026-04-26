@@ -1,0 +1,104 @@
+@startuml DS_S2
+skinparam backgroundColor #FFFFFF
+skinparam sequence {
+  ArrowColor #006B6B
+  ActorBorderColor #006B6B
+  ActorBackgroundColor #E0F4F4
+  ParticipantBorderColor #006B6B
+  ParticipantBackgroundColor #E0F4F4
+  ParticipantFontColor #003333
+  ParticipantFontSize 11
+  LifeLineBorderColor #AAAAAA
+  LifeLineBackgroundColor #F5FFFE
+  NoteBackgroundColor #FFFDE7
+  NoteBorderColor #F9A825
+  GroupBackgroundColor #F0FAF9
+  GroupBorderColor #006B6B
+}
+skinparam title {
+  FontSize 13
+  FontColor #006B6B
+  FontStyle bold
+}
+
+title DiabCare — Diagramme de Sequence Sprint 2\nScenario : Mesure critique - Alerte - Prescription - RDV urgence
+
+actor "Patient Fatma" as P
+participant "Patient\nChaima F1" as PAT
+participant "HistoriqueGlycemie\nKenza F2" as HG
+participant "Alerte\nInes F5" as AL
+participant "DashboardMedecin\nYassmine F4" as DB
+participant "RendezVous\nFolla F3" as RDV
+actor "Dr. Ben Tahar" as M
+
+== 1. Connexion du patient ==
+
+P -> PAT : seConnecter(email, motDePasse)
+activate PAT
+alt Connexion reussie
+  PAT --> P : true — "Bienvenue Fatma !"
+else Echec connexion
+  PAT --> P : false — "Identifiants invalides"
+end
+deactivate PAT
+
+== 2. Saisie de la mesure glycemique ==
+
+P -> HG : ajouterMesure(15.8 mmol/L, APRES_REPAS)
+activate HG
+note right of HG
+  estValide() : OK
+  evaluerGlycemie() :
+  HYPERGLYCEMIE SEVERE
+  Valeur critique detectee !
+end note
+HG --> P : "Mesure enregistree — 15.8 mmol/L"
+deactivate HG
+
+== 3. Declenchement de l'alerte ==
+
+P -> AL : verifierSeuil(15.8)
+activate AL
+note right of AL
+  15.8 > 13.9 mmol/L
+  Type : HYPERGLYCEMIE_SEVERE
+  Niveau urgence : 4 sur 5
+end note
+opt Valeur critique detectee
+  AL --> P : "Alerte : Glycemie tres elevee !"
+  AL --> M : "Alerte medecin : Patient #1 a traiter"
+end
+deactivate AL
+
+== 4. Medecin consulte le dashboard ==
+
+M -> DB : afficherDashboard()
+activate DB
+DB --> M : "Fatma en alerte — Moy. 11.4 mmol/L"
+deactivate DB
+
+M -> DB : ajouterCommentaire("Augmenter insuline 10UI", PRESCRIPTION)
+activate DB
+DB --> M : "Prescription enregistree"
+DB --> P : "Notification : prescription disponible"
+deactivate DB
+
+== 5. Rendez-vous d'urgence ==
+
+P -> RDV : demanderRendezVous("2025-04-18", "08:00", "Urgence hyperglycemie")
+activate RDV
+note right of RDV
+  Validation format date : OK
+  Duree estimee : 60 min
+end note
+RDV --> P : "RDV en attente de validation"
+M -> RDV : valider()
+RDV --> P : "RDV confirme le 18/04 a 08:00"
+deactivate RDV
+
+note over P, M #E0F4F4
+  Scenario complet impliquant les 5 fonctionnalites :
+  F1 Chaima + F2 Kenza + F3 Folla + F4 Yassmine + F5 Ines
+end note
+
+@enduml
