@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package com.diabcare.models;
 
 import java.util.ArrayList;
@@ -10,7 +9,10 @@ public class Main {
 
         System.out.println("=== DiabCare Sprint 2 ===");
 
-        // Médecins
+        // =========================
+        // 🟢 Partie 1 : Rendez-vous
+        // =========================
+
         Medecin m1 = new Medecin("Dr Fatma Karoui", "Endocrinologue", "Tunis");
         Medecin m2 = new Medecin("Dr Mehdi Touati", "Nutritionniste", "Manar");
 
@@ -18,10 +20,8 @@ public class Main {
         medecins.add(m1);
         medecins.add(m2);
 
-        // Services
         RendezVousService service = new RendezVousService();
 
-        // Patient
         Patient p1 = new Patient("Ali Ben Ali");
 
         System.out.println("\n--- Recherche Médecin ---");
@@ -48,25 +48,28 @@ public class Main {
 
         System.out.println("\n--- Tous les RDV ---");
         service.afficherRDV();
+
+
+        // =========================
+        // 🟡 Partie 2 : Dashboard
+        // =========================
+
+        System.out.println("\n--- Dashboard Médecin ---");
+
+        Patient p2 = new Patient("Khalil");
+        Patient p3 = new Patient("Amira");
+        Patient p4 = new Patient("Leila");
+
+        p2.setDerniereMesure(18.5);
+        p3.setDerniereMesure(7.2);
+        p4.setDerniereMesure(14.0);
+
+        Medecin med = new Medecin("Dr Yassmine", "Diabétologue", "Tunis");
+
+        med.ajouterPatient(p2);
+        med.ajouterPatient(p3);
+        med.ajouterPatient(p4);
+
+        med.afficherDashboard();
     }
 }
-=======
-System.out.println("--- Dashboard Médecin (Yassmine) ---");
-
-Patient p1 = new Patient("Khalil", "k@mail.com", "123");
-p1.setDerniereMesure(18.5);
-
-Patient p2 = new Patient("Amira", "a@mail.com", "123");
-p2.setDerniereMesure(7.2);
-
-Patient p3 = new Patient("Leila", "l@mail.com", "123");
-p3.setDerniereMesure(14.0);
-
-Medecin med = new Medecin("Dr. Yassmine");
-
-med.ajouterPatient(p1);
-med.ajouterPatient(p2);
-med.ajouterPatient(p3);
-
-med.afficherDashboard();
->>>>>>> 4c8e9f207bb0f56808005cb6e644ceaebe84d75e
