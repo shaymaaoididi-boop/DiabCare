@@ -5,22 +5,42 @@ import java.util.ArrayList;
 public class Medecin {
 
     private String nom;
+    private String specialite;
+    private String adresse;
+    private boolean disponible;
+
     private ArrayList<Patient> patients;
 
-    public Medecin(String nom) {
+    public Medecin(String nom, String specialite, String adresse) {
         this.nom = nom;
+        this.specialite = specialite;
+        this.adresse = adresse;
+        this.disponible = true;
         this.patients = new ArrayList<>();
     }
 
+    public String getNom() { return nom; }
+    public String getSpecialite() { return specialite; }
+    public String getAdresse() { return adresse; }
+
+    public boolean estDisponible() {
+        return disponible;
+    }
+
+    public void setDisponible(boolean disponible) {
+        this.disponible = disponible;
+    }
+
+    // gestion patients
     public void ajouterPatient(Patient p) {
         patients.add(p);
     }
 
+    // dashboard médecin
     public void afficherDashboard() {
 
         System.out.println("=== 🩺 Espace Médecin ===");
 
-        // 🔝 Stats
         int total = patients.size();
         int alertes = 0;
 
@@ -38,7 +58,6 @@ public class Medecin {
 
         System.out.println("--------------------------------------------------");
 
-        // 📋 Tableau
         System.out.printf("%-10s %-15s %-10s %-10s %-10s\n",
                 "Nom", "Dernière", "Statut", "Moyenne", "Alertes");
 
@@ -59,5 +78,10 @@ public class Medecin {
         }
 
         System.out.println("--------------------------------------------------");
+    }
+
+    @Override
+    public String toString() {
+        return nom + " - " + specialite + " (" + adresse + ")";
     }
 }

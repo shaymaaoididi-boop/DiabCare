@@ -1,17 +1,27 @@
-pprivate double derniereMesure;
+package com.diabcare.models;
 
-public String getNom() {
-    return nom;
-}
+public class Patient {
 
-public double getDerniereMesure() {
-    return derniereMesure;
-}
+    private String nom;
+    private double derniereMesure;
 
-public void setDerniereMesure(double valeur) {
-    this.derniereMesure = valeur;
-}
+    public Patient(String nom) {
+        this.nom = nom;
+    }
 
-public double calculerMoyenne() {
-    return derniereMesure; // simplifié Sprint 1
+    public String getNom() {
+        return nom;
+    }
+
+    public double getDerniereMesure() {
+        return derniereMesure;
+    }
+
+    public void setDerniereMesure(double valeur) {
+        this.derniereMesure = valeur;
+    }
+
+    public double calculerMoyenne() {
+        return derniereMesure; // simplifié Sprint 1
+    }
 }
