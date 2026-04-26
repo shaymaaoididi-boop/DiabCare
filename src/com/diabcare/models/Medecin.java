@@ -1,25 +1,32 @@
 package com.diabcare.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Medecin {
 
+    private int id;
     private String nom;
+    private String email;
     private String specialite;
     private String adresse;
     private boolean disponible;
 
-    private ArrayList<Patient> patients;
+    private List<Patient> patients;
 
-    public Medecin(String nom, String specialite, String adresse) {
+    public Medecin(int id, String nom, String email, String specialite, String adresse) {
+        this.id = id;
         this.nom = nom;
+        this.email = email;
         this.specialite = specialite;
         this.adresse = adresse;
         this.disponible = true;
         this.patients = new ArrayList<>();
     }
 
+    // getters
     public String getNom() { return nom; }
+    public String getEmail() { return email; }
     public String getSpecialite() { return specialite; }
     public String getAdresse() { return adresse; }
 
@@ -31,15 +38,34 @@ public class Medecin {
         this.disponible = disponible;
     }
 
-    // gestion patients
-    public void ajouterPatient(Patient p) {
-        patients.add(p);
+    public List<Patient> getPatients() {
+        return patients;
     }
 
-    // dashboard médecin
+    // Ajouter patient
+    public void ajouterPatient(Patient p) {
+        patients.add(p);
+        System.out.println("Patient ajouté : " + p.getNom());
+    }
+
+    // Analyse médicale (from HEAD)
+    public void analyserPatients() {
+        System.out.println("\nAnalyse médicale du Dr " + nom);
+
+        for (Patient p : patients) {
+            if (p.estAlerte()) {
+                System.out.println(p.getNom() + " - RISQUE ÉLEVÉ");
+            } else {
+                System.out.println(p.getNom() + " - Stable");
+            }
+        }
+    }
+
+    // Dashboard (from origin/main amélioré + stats HEAD)
     public void afficherDashboard() {
 
         System.out.println("=== 🩺 Espace Médecin ===");
+        System.out.println("Médecin : Dr " + nom + " | Email : " + email);
 
         int total = patients.size();
         int alertes = 0;
@@ -50,7 +76,7 @@ public class Medecin {
             }
         }
 
-        int taux = (total == 0) ? 0 : (int)(((total - alertes) * 100.0) / total);
+        int taux = (total == 0) ? 0 : (int) (((total - alertes) * 100.0) / total);
 
         System.out.println("Patients : " + total +
                 " | Alertes : " + alertes +
