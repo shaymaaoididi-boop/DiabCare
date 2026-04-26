@@ -21,7 +21,7 @@ public class Patient {
 
     public String getStatut() {
         if (glycemie > 2.0) return "Critique";
-        else if (glycemie > 1.😎 return "Élevé";
+        else if (glycemie > 1.8) return "Élevé";
         else return "Stable";
     }
 

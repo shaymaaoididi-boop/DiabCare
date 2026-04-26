@@ -22,7 +22,7 @@ public class Medecin {
         System.out.println(" Patient ajouté : " + p.getNom());
     }
 
-    // 🔍 Analyse médicale (feature)
+    // 🔍 Analyse médicale
     public void analyserPatients() {
         System.out.println("\n Analyse médicale du Dr " + nom);
 
@@ -35,10 +35,11 @@ public class Medecin {
         }
     }
 
-    // 📊 Dashboard (main)
+    // 📊 Dashboard
     public void afficherDashboard() {
 
-        System.out.println("=== 🩺 Espace Médecin ===");
+        System.out.println("=== DASHBOARD MÉDECIN ===");
+        System.out.println("Médecin : Dr " + nom + " | Email : " + email);
 
         int total = patients.size();
         int alertes = 0;
@@ -51,11 +52,10 @@ public class Medecin {
 
         int taux = (total == 0) ? 0 : (int)(((total - alertes) * 100.0) / total);
 
-        System.out.println("Patients : " + total +
-                " | Alertes : " + alertes +
-                " | Taux contrôle : " + taux + "%");
+        System.out.println("\n Statistiques globales :");
+        System.out.println("Nombre de patients : " + total);
 
-        System.out.println("--------------------------------------------------");
+        System.out.println("\n--------------------------------------------------");
 
         System.out.printf("%-10s %-15s %-10s %-10s %-10s\n",
                 "Nom", "Dernière", "Statut", "Moyenne", "Alertes");
