@@ -1,0 +1,78 @@
+package com.diabcare.models;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        System.out.println("=== DiabCare — Démonstration Sprint 2 ===");
+
+        // ─────────────────────────────
+        // 📌 Scénario 1 : Inscription & Connexion
+        // ─────────────────────────────
+        System.out.println("\n--- Authentification ---");
+
+        Patient p1 = new Patient(
+                "1", "Ben Ali", "Ahmed",
+                "ahmed@mail.com", "Password1",
+                LocalDate.of(2000, 5, 10),
+                "Type 1", 70
+        );
+
+        p1.sInscrire();
+        p1.seConnecter("ahmed@mail.com", "Password1");
+
+        // ─────────────────────────────
+        // 📌 Scénario 2 : Mesures glycémiques
+        // ─────────────────────────────
+        System.out.println("\n--- Mesures Glycémiques ---");
+
+        MesureGlycemique m1 = new MesureGlycemique(2.5, "à jeun", LocalDateTime.now());
+        MesureGlycemique m2 = new MesureGlycemique(6.2, "après repas", LocalDateTime.now());
+        MesureGlycemique m3 = new MesureGlycemique(14.5, "avant repas", LocalDateTime.now());
+
+        p1.enregistrerMesure(m1);
+        p1.enregistrerMesure(m2);
+        p1.enregistrerMesure(m3);
+
+        // ─────────────────────────────
+        // 📌 Scénario 3 : Historique + moyenne
+        // ─────────────────────────────
+        System.out.println("\n--- Historique ---");
+
+        System.out.println("Nombre de mesures (30j): " + p1.consulterHistorique(30).size());
+        System.out.println("Moyenne (7j): " + p1.calculerMoyenne(7) + " mmol/L");
+        System.out.println("Statut: " + p1.getStatutGlycemique());
+
+        // ─────────────────────────────
+        // 📌 Scénario 4 : Rendez-vous (TA PARTIE 🔥)
+        // ─────────────────────────────
+        System.out.println("\n--- Rendez-vous ---");
+
+        Medecin med = new Medecin("Fatma", "Karoui", "Endocrinologue");
+
+        RendezVousService service = new RendezVousService();
+
+        RendezVous rdv = service.demanderRDV(med, "25/04/2026", "09:00");
+
+        System.out.println("\nRécapitulatif :");
+        System.out.println(rdv.getRecapitulatif());
+
+        // Médecin valide
+        service.validerRDV(rdv);
+
+        // ─────────────────────────────
+        // 📌 Scénario 5 : Profil patient
+        // ─────────────────────────────
+        System.out.println("\n--- Profil Patient ---");
+        p1.mettreAJourProfil(72, "Insuline", med);
+        p1.afficherDetails();
+
+        // ─────────────────────────────
+        // 📌 Fin
+        // ─────────────────────────────
+        System.out.println("\n=== Fin démonstration ===");
+    }
+}

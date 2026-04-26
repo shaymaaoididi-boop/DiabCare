@@ -8,37 +8,63 @@ public class Medecin {
     private int id;
     private String nom;
     private String email;
+    private String specialite;
+    private String adresse;
+    private boolean disponible;
+
     private List<Patient> patients;
 
-    public Medecin(int id, String nom, String email) {
+    public Medecin(int id, String nom, String email, String specialite, String adresse) {
         this.id = id;
         this.nom = nom;
         this.email = email;
+        this.specialite = specialite;
+        this.adresse = adresse;
+        this.disponible = true;
         this.patients = new ArrayList<>();
     }
 
-    public void ajouterPatient(Patient p) {
-        patients.add(p);
-        System.out.println(" Patient ajouté : " + p.getNom());
+    // getters
+    public String getNom() { return nom; }
+    public String getEmail() { return email; }
+    public String getSpecialite() { return specialite; }
+    public String getAdresse() { return adresse; }
+
+    public boolean estDisponible() {
+        return disponible;
     }
 
-    // 🔍 Analyse médicale
+    public void setDisponible(boolean disponible) {
+        this.disponible = disponible;
+    }
+
+    public List<Patient> getPatients() {
+        return patients;
+    }
+
+    // Ajouter patient
+    public void ajouterPatient(Patient p) {
+        patients.add(p);
+        System.out.println("Patient ajouté : " + p.getNom());
+    }
+
+    // Analyse médicale (from HEAD)
     public void analyserPatients() {
-        System.out.println("\n Analyse médicale du Dr " + nom);
+        System.out.println("\nAnalyse médicale du Dr " + nom);
 
         for (Patient p : patients) {
             if (p.estAlerte()) {
-                System.out.println(" " + p.getNom() + " - RISQUE ÉLEVÉ");
+                System.out.println(p.getNom() + " - RISQUE ÉLEVÉ");
             } else {
-                System.out.println(" " + p.getNom() + " - Stable");
+                System.out.println(p.getNom() + " - Stable");
             }
         }
     }
 
-    // 📊 Dashboard
+    // Dashboard (from origin/main amélioré + stats HEAD)
     public void afficherDashboard() {
 
-        System.out.println("=== DASHBOARD MÉDECIN ===");
+        System.out.println("=== 🩺 Espace Médecin ===");
         System.out.println("Médecin : Dr " + nom + " | Email : " + email);
 
         int total = patients.size();
@@ -50,12 +76,13 @@ public class Medecin {
             }
         }
 
-        int taux = (total == 0) ? 0 : (int)(((total - alertes) * 100.0) / total);
+        int taux = (total == 0) ? 0 : (int) (((total - alertes) * 100.0) / total);
 
-        System.out.println("\n Statistiques globales :");
-        System.out.println("Nombre de patients : " + total);
+        System.out.println("Patients : " + total +
+                " | Alertes : " + alertes +
+                " | Taux contrôle : " + taux + "%");
 
-        System.out.println("\n--------------------------------------------------");
+        System.out.println("--------------------------------------------------");
 
         System.out.printf("%-10s %-15s %-10s %-10s %-10s\n",
                 "Nom", "Dernière", "Statut", "Moyenne", "Alertes");
@@ -79,11 +106,8 @@ public class Medecin {
         System.out.println("--------------------------------------------------");
     }
 
-    public List<Patient> getPatients() {
-        return patients;
-    }
-
-    public void afficherDetails() {
-        System.out.println("Médecin : " + nom + " | Email : " + email);
+    @Override
+    public String toString() {
+        return nom + " - " + specialite + " (" + adresse + ")";
     }
 }

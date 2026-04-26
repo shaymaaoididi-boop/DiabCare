@@ -6,8 +6,14 @@ public class Main {
 
         System.out.println("=== DIABCARE — SPRINT 2 FINAL ===");
 
-        // 👨‍⚕️ Création médecin
-        Medecin medecin = new Medecin(1, "Yasmine", "yasmine@mail.com");
+        // 👨‍⚕️ Création médecin (corrigé)
+        Medecin medecin = new Medecin(
+                1,
+                "Yasmine",
+                "yasmine@mail.com",
+                "Endocrinologue",
+                "Tunis"
+        );
 
         // 👥 Création patients
         Patient p1 = new Patient(1, "Ahmed", 1.8);

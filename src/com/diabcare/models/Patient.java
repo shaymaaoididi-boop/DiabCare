@@ -14,7 +14,29 @@ public class Patient {
         this.derniereMesure = glycemie;
     }
 
-    // 🔍 Analyse
+    // Getters
+    public int getId() {
+        return id;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public double getGlycemie() {
+        return glycemie;
+    }
+
+    public double getDerniereMesure() {
+        return derniereMesure;
+    }
+
+    // Setters
+    public void setDerniereMesure(double valeur) {
+        this.derniereMesure = valeur;
+    }
+
+    // 🔍 Analyse médicale
     public boolean estAlerte() {
         return glycemie > 1.8;
     }
@@ -31,20 +53,12 @@ public class Patient {
         this.derniereMesure = nouvelleValeur;
     }
 
-    // 📊 Dashboard
-    public double getDerniereMesure() {
+    // 📊 Moyenne (simplifiée)
+    public double calculerMoyenne() {
         return derniereMesure;
     }
 
-    public double calculerMoyenne() {
-        return derniereMesure; // simplifié
-    }
-
-    // 📋 Getters
-    public int getId() { return id; }
-    public String getNom() { return nom; }
-    public double getGlycemie() { return glycemie; }
-
+    // 📋 Affichage
     public void afficherDetails() {
         System.out.println("Patient : " + nom +
                 " | Glycémie : " + glycemie +
