@@ -23,12 +23,12 @@ public class Alerte {
     
     public TypeAlerte analyser() {
 
-        if (valeur < 70) {
+        if (valeur < 3.9) {
             type = TypeAlerte.HYPOGLYCEMIE;
             message = "Danger: glycémie trop basse";
         } 
-        else if (valeur <= 180) {
-            type = TypeAlerte.HYPERGLYCEMIE_MODEREE;
+        else if (valeur <= 13.9) {
+            type = TypeAlerte.HYPERGLYCEMIE_LEGERE;
             message = "Attention: glycémie élevée";
         } 
         else {

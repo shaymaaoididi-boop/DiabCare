@@ -6,13 +6,13 @@ public class Main {
 
         System.out.println("=== DiabCare — SPRINT 2 ===");
 
-        Alerte a1 = new Alerte(1, 65, 101);
+        Alerte a1 = new Alerte(1, 3.0, 101);
         a1.traiter();
 
-        Alerte a2 = new Alerte(2, 150, 102);
+        Alerte a2 = new Alerte(2, 8.0, 102);
         a2.traiter();
 
-        Alerte a3 = new Alerte(3, 300, 103);
+        Alerte a3 = new Alerte(3, 15.0, 103);
         a3.traiter();
 
         System.out.println("\n📊 AFFICHAGE HISTORIQUE:");
